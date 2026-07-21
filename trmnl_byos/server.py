@@ -17,7 +17,7 @@ from renderer import Renderer
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)
 
-VERSION = "3.0.0"
+VERSION = "3.0.1"
 
 # ---------------------------------------------------------------------------
 # Config
@@ -448,8 +448,29 @@ def healthz():
 # Entry point
 # ---------------------------------------------------------------------------
 
+def _log_environment():
+    import platform
+    import sys
+    distro = "?"
+    try:
+        with open("/etc/os-release") as f:
+            for line in f:
+                if line.startswith("PRETTY_NAME="):
+                    distro = line.split("=", 1)[1].strip().strip('"')
+                    break
+    except Exception:
+        pass
+    log.info("env: %s | python %s (%s)", distro, platform.python_version(), sys.executable)
+    try:
+        import playwright
+        log.info("env: playwright import OK (%s)", playwright.__file__)
+    except Exception as exc:
+        log.warning("env: playwright import FAILED (%s) — base image is wrong", exc)
+
+
 if __name__ == "__main__":
     log.info("TRMNL BYOS server v%s starting on port %s", VERSION, PORT)
+    _log_environment()
     # The renderer owns Playwright's sync objects, which are bound to the thread that
     # creates them. It is therefore started lazily inside capture(), on the cache thread —
     # never from the main thread — so every Playwright call happens on that one thread.
