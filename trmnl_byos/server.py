@@ -17,7 +17,7 @@ from renderer import Renderer
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)
 
-VERSION = "3.0.1"
+VERSION = "3.0.2"
 
 # ---------------------------------------------------------------------------
 # Config

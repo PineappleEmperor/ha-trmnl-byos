@@ -1,6 +1,6 @@
 name: TRMNL BYOS Server
 description: Minimal TRMNL Bring Your Own Server — renders a Home Assistant dashboard with a persistent warm headless browser, dithers for e-ink, and exposes MQTT entities for device state and sleep control.
-version: "3.0.1"
+version: "3.0.2"
 slug: trmnl_byos
 init: false
 arch:
