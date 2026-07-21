@@ -1,0 +1,64 @@
+name: TRMNL BYOS Server
+description: Minimal TRMNL Bring Your Own Server — renders a Home Assistant dashboard with a persistent warm headless browser, dithers for e-ink, and exposes MQTT entities for device state and sleep control.
+version: "3.0.0"
+slug: trmnl_byos
+init: false
+arch:
+  - amd64
+  - aarch64
+ports:
+  8765/tcp: 8765
+ports_description:
+  8765/tcp: TRMNL BYOS API
+options:
+  port: 8765
+  api_key: "changeme"
+  refresh_rate: 180
+  sleep_refresh_rate: 3600
+  cache_refresh_rate: 60
+  ha_url: "http://homeassistant:8123"
+  ha_token: ""
+  dashboard_path: "dashboard-eink"
+  theme: "Graphite E-ink Light"
+  lang: "en-GB"
+  render_width: 800
+  render_height: 536
+  crop_x: 0
+  crop_y: 56
+  crop_width: 800
+  crop_height: 480
+  rotation: 0
+  dither: true
+  compression_level: 6
+  zoom: 1.0
+  mqtt_host: "core-mosquitto"
+  mqtt_port: 1883
+  mqtt_user: ""
+  mqtt_password: ""
+  mqtt_discovery_prefix: "homeassistant"
+schema:
+  port: int
+  api_key: str
+  refresh_rate: int
+  sleep_refresh_rate: int
+  cache_refresh_rate: int
+  ha_url: str
+  ha_token: str
+  dashboard_path: str
+  theme: str
+  lang: str
+  render_width: int
+  render_height: int
+  crop_x: int
+  crop_y: int
+  crop_width: int
+  crop_height: int
+  rotation: int
+  dither: bool
+  compression_level: int
+  zoom: float
+  mqtt_host: str
+  mqtt_port: int
+  mqtt_user: str
+  mqtt_password: str
+  mqtt_discovery_prefix: str
