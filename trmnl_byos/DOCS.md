@@ -11,7 +11,15 @@ the header, and applies ordered (Bayer) dithering to a 4-level grey palette for 
 
 ## Setup
 
-1. In Home Assistant: **Profile → Long-Lived Access Tokens → Create Token**. Copy it.
+> **Use a dedicated Home Assistant user for the token.** The renderer logs in as the token's
+> user, and things like the selected theme are that user's own settings. A dedicated (non-admin)
+> user keeps the add-on from touching your account and limits its access. Set the e-ink theme on
+> **that user's** Profile → Theme — the renderer does not (and must not) change the theme
+> globally.
+
+1. Create a dedicated HA user (Settings → People → Users). Log in as them once, set
+   Profile → **Theme** to your e-ink theme (e.g. `Graphite E-ink Light`).
+2. As that user: **Profile → Long-Lived Access Tokens → Create Token**. Copy it.
 2. In the add-on **Configuration**, set:
    - `ha_token` — the token you just created (required; without it the renderer captures the
      login screen, and the add-on log warns `page is NOT authenticated`).
@@ -35,8 +43,7 @@ the header, and applies ordered (Bayer) dithering to a 4-level grey palette for 
 | `ha_url` | `http://homeassistant:8123` | Home Assistant base URL |
 | `ha_token` | `""` | long-lived access token (required) |
 | `dashboard_path` | `dashboard-eink` | dashboard/view to render |
-| `theme` | `Graphite E-ink Light` | Home Assistant theme name |
-| `lang` | `en-GB` | Home Assistant UI language |
+| `lang` | `en-GB` | Home Assistant UI language (set browser-side, not global) |
 | `render_width` | `800` | Chromium viewport width |
 | `render_height` | `536` | Chromium viewport height (output height + `crop_y`) |
 | `crop_x` / `crop_y` | `0` / `56` | top-left of the screenshot crop (strips the 56px header) |

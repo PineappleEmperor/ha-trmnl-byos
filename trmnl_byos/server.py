@@ -17,7 +17,7 @@ from renderer import Renderer
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)
 
-VERSION = "3.0.2"
+VERSION = "3.0.3"
 
 # ---------------------------------------------------------------------------
 # Config
@@ -41,7 +41,6 @@ CACHE_REFRESH_RATE  = int(_opt("cache_refresh_rate", 60))
 HA_URL             = str(_opt("ha_url", "http://homeassistant:8123")).rstrip("/")
 HA_TOKEN           = str(_opt("ha_token", ""))
 DASHBOARD_PATH     = str(_opt("dashboard_path", "dashboard-eink"))
-THEME              = str(_opt("theme", "Graphite E-ink Light"))
 LANG               = str(_opt("lang", "en-GB"))
 RENDER_WIDTH       = int(_opt("render_width", 800))
 RENDER_HEIGHT      = int(_opt("render_height", 536))
@@ -91,7 +90,7 @@ cache_wake = threading.Event()
 
 renderer = Renderer(
     ha_url=HA_URL, ha_token=HA_TOKEN, dashboard_path=DASHBOARD_PATH,
-    theme=THEME, lang=LANG,
+    lang=LANG,
     render_width=RENDER_WIDTH, render_height=RENDER_HEIGHT,
     crop_x=CROP_X, crop_y=CROP_Y, crop_width=CROP_WIDTH, crop_height=CROP_HEIGHT,
     rotation=ROTATION, dither=DITHER, compression_level=COMPRESSION_LEVEL, zoom=ZOOM,

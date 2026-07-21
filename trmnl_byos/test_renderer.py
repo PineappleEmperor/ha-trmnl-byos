@@ -26,7 +26,7 @@ def test_capture_crops_and_quantises():
     try:
         r = Renderer(
             ha_url=f"http://127.0.0.1:{port}", ha_token="", dashboard_path="test.html",
-            theme="", lang="en-GB", render_width=800, render_height=536,
+            lang="en-GB", render_width=800, render_height=536,
             crop_x=0, crop_y=56, crop_width=800, crop_height=480,
             rotation=0, dither=True, compression_level=6, zoom=1.0,
         )

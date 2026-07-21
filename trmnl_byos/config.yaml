@@ -1,6 +1,6 @@
 name: TRMNL BYOS Server
 description: Minimal TRMNL Bring Your Own Server — renders a Home Assistant dashboard with a persistent warm headless browser, dithers for e-ink, and exposes MQTT entities for device state and sleep control.
-version: "3.0.2"
+version: "3.0.3"
 slug: trmnl_byos
 init: false
 arch:
@@ -19,7 +19,6 @@ options:
   ha_url: "http://homeassistant:8123"
   ha_token: ""
   dashboard_path: "dashboard-eink"
-  theme: "Graphite E-ink Light"
   lang: "en-GB"
   render_width: 800
   render_height: 536
@@ -45,7 +44,6 @@ schema:
   ha_url: str
   ha_token: str
   dashboard_path: str
-  theme: str
   lang: str
   render_width: int
   render_height: int

@@ -23,13 +23,12 @@ _SETTLE_MS = 1000  # pause after theme applied, before first capture, to let rep
 
 
 class Renderer:
-    def __init__(self, *, ha_url, ha_token, dashboard_path, theme, lang,
+    def __init__(self, *, ha_url, ha_token, dashboard_path, lang,
                  render_width, render_height, crop_x, crop_y, crop_width, crop_height,
                  rotation, dither, compression_level, zoom):
         self.ha_url = ha_url.rstrip("/")
         self.ha_token = ha_token
         self.dashboard_path = dashboard_path.lstrip("/")
-        self.theme = theme
         self.lang = lang
         self.render_width = render_width
         self.render_height = render_height
@@ -78,7 +77,16 @@ class Renderer:
 
         self._pw = sync_playwright().start()
         self._browser = self._pw.chromium.launch(
-            headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"]
+            headless=True,
+            args=[
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+                "--disable-software-rasterizer",
+                "--disable-extensions",
+                "--hide-scrollbars",
+                "--mute-audio",
+            ],
         )
         self._context = self._browser.new_context(
             viewport={"width": self.render_width, "height": self.render_height},
@@ -90,7 +98,7 @@ class Renderer:
         url = f"{self.ha_url}/{self.dashboard_path}"
         self._page.goto(url, wait_until="networkidle", timeout=60000)
         self._page.evaluate("() => document.fonts.ready")
-        self._apply_theme_and_zoom()
+        self._apply_zoom()
         self._page.wait_for_timeout(_SETTLE_MS)
         self._check_auth()
         log.info("renderer: warm page loaded at %s", url)
@@ -111,17 +119,12 @@ class Renderer:
                 "screen, not the dashboard. Check ha_token and ha_url."
             )
 
-    def _apply_theme_and_zoom(self):
-        if self.theme:
-            self._page.evaluate(
-                """(theme) => {
-                    const el = document.querySelector('home-assistant');
-                    if (el && el.hass) {
-                        el.hass.callService('frontend', 'set_theme', { name: theme });
-                    }
-                }""",
-                self.theme,
-            )
+    def _apply_zoom(self):
+        # NOTE: do NOT call the `frontend.set_theme` service here. It sets the theme globally
+        # in Home Assistant's frontend store for every user — it is not scoped to this headless
+        # page. The e-ink theme must instead be set on the ha_token user's own profile
+        # (Profile -> Theme), ideally a dedicated user, so it affects only what this renderer
+        # loads. `theme` config is applied that way, out of band, not from here.
         if self.zoom and self.zoom != 1.0:
             self._page.evaluate("(z) => { document.body.style.zoom = z; }", self.zoom)
 
